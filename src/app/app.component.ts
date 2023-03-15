@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Todo, TodoService } from './todo.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,29 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'todo-app-ng';
+  todos: Todo[] = [];
+  newTodoTitle = '';
+
+  constructor(private todoService: TodoService) {
+    this.todos = this.todoService.getTodos();
+  }
+
+  addTodo(title: string): void {
+    if (title.trim().length === 0) {
+      return;
+    }
+    this.todoService.addTodo(title);
+    this.todos = this.todoService.getTodos();
+  }
+
+
+  deleteTodoById(id: number): void {
+    this.todoService.deleteTodoById(id);
+    this.todos = this.todoService.getTodos();
+  }
+
+  toggleCompleted(id: number): void {
+    this.todoService.toggleCompleted(id);
+    this.todos = this.todoService.getTodos();
+  }
 }
